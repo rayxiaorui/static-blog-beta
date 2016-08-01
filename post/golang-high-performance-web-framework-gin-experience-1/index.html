@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title> Golang 高性能 Web 框架 Gin 体验（一） &middot; A static blog </title>
+
+
+<link rel="stylesheet" href="http://rayxiaoo.github.io/static-blog/css/slim.css">
+<link rel="stylesheet" href="http://rayxiaoo.github.io/static-blog/css/highlight.min.css">
+<link href='https://fonts.lug.ustc.edu.cn/css?family=Source+Sans+Pro:400,700|Source+Code+Pro' rel='stylesheet' type='text/css'>
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="A static blog" />
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+  <h1 class="site-title"><a href="http://rayxiaoo.github.io/static-blog/">A static blog</a></h1>
+  <p class="site-tagline">!)-.-) Hello, gfw.</p>
+  <div class="nav">
+    <a class="nav-btn" href="#">
+      <span class="ci ci-burger"></span>
+    </a>
+    <ul class="nav-list">
+      
+      <li><a href="/static-blog/about/">About Me</a></li>
+       
+	  <li class="spacer">&ac;</li>
+
+      <li><a href="https://github.com/rayxiaoo">Github</a></li>  
+    </ul>
+  </div>
+</div>
+    <div class="content">
+      <div class="posts">
+        <div class="post">
+          <h2 class="post-title"><a href="http://rayxiaoo.github.io/static-blog/post/golang-high-performance-web-framework-gin-experience-1/">Golang 高性能 Web 框架 Gin 体验（一）</a></h2>
+          <span class="post-date">May 3, 2016 </span>
+          <div class="post-content">
+            
+
+<blockquote>
+<p>Gin 是一个高性能 HTTP web 框架，使用 Go（Golang） 语言开发，项目介绍说：它有着和 Martini 相似的 API，而超高的性能得益于使用了 <a href="https://github.com/julienschmidt/httprouter">httprouter</a>，如果你需要开发高性能应用，可以试试 Gin！</p>
+
+<p>gin 地址： <a href="https://gin-gonic.github.io/gin/">https://gin-gonic.github.io/gin/</a></p>
+
+<p>httprouter 地址： <a href="https://github.com/julienschmidt/httprouter">https://github.com/julienschmidt/httprouter</a></p>
+</blockquote>
+
+<h1 id="第一次使用-gin-框架">第一次使用 Gin 框架</h1>
+
+<hr />
+
+<h3 id="1-第一次使用需要先获取相应包">1. 第一次使用需要先获取相应包</h3>
+
+<p><strong>注：这里需要先安装好 Go 语言</strong></p>
+
+<p><code>$ go get github.com/gin-gonic/gin</code></p>
+
+<hr />
+
+<h3 id="2-导入相关包即可">2. 导入相关包即可</h3>
+
+<p>需要了解如何使用，可以编写一个简单的测试程序，流程如下</p>
+
+<ul>
+<li>新建一个文件 test.go</li>
+<li>键入测试程序代码</li>
+<li>编译测试文件</li>
+<li>运行编译成功的可执行文件</li>
+<li>使用浏览器查看结果</li>
+</ul>
+
+<p><strong>测试代码如下：</strong></p>
+
+<pre><code>package main
+
+// 引入 Gin 的框架包
+import &quot;github.com/gin-gonic/gin&quot;
+
+func main() {
+    // 先获取默认路由
+    r := gin.Default()
+    // 这里使用 GET 方式进行响应，可以直接返回 JSON 格式的文本
+    r.GET(&quot;/hello&quot;, func(c *gin.Context) {
+        c.JSON(200, gin.H{
+            &quot;message&quot;: &quot;Hello ,Gin Framework.&quot;,
+        })
+    })
+    // 这里运行后启动WEB服务；监听的IP和端口为： 0.0.0.0:8080
+    r.Run()
+}
+</code></pre>
+
+<p><strong>编译（这里测试环境使用的 Windows 10，Go 1.6）</strong><br />
+<code>$ go build -o test.exe</code></p>
+
+<p><strong>运行后出现如下界面</strong></p>
+
+<pre><code>$ ./test.exe
+[GIN-debug] [WARNING] Running in &quot;debug&quot; mode. Switch to &quot;release&quot; mode in production.
+ - using env:   export GIN_MODE=release
+ - using code:  gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /hello                     --&gt; main.main.func1 (3 handlers)
+[GIN-debug] Environment variable PORT is undefined. Using port :8080 by default
+[GIN-debug] Listening and serving HTTP on :8080
+</code></pre>
+
+<p>这里运行后反馈的消息还是比较明了的；开始就提示了是 debug 模式
+下面有路由，访问方式，对应函数，访问端口等信息。</p>
+
+<p><strong>接下来使用浏览器输入地址 127.0.0.1:8080 查看结果</strong></p>
+
+<p><img src="http://i3.buimg.com/8e2b0c7792fc9ded.png" alt="gin-first-test-hello-json" title="gin-first-test-hello-json" /></p>
+
+<p><img src="http://i3.buimg.com/1a6cc4ab5291af6d.png" alt="gin-first-test-hello-json-mingw64" title="gin-first-test-hello-json-mingw64" /></p>
+
+<p><strong>至此，已经完成了第一个测试程序。</strong>
+<strong>高性能这点代码肯定体现不出来，只有在接下来继续深入了解后才能得知</strong></p>
+
+<h1 id="gin-的访问方式">Gin 的访问方式</h1>
+
+<p>在上面的测试代码中，只使用了 GET 访问方式；</p>
+
+<p>而 Gin 支持的可选访问方式从官方例子中得知有以下几种。</p>
+
+<ul>
+<li>GET</li>
+<li>POST</li>
+<li>PUT</li>
+<li>PATCH</li>
+<li>DELETE</li>
+<li>OPTIONS</li>
+</ul>
+
+<p>官方例子如下：</p>
+
+<pre><code>package main
+import &quot;github.com/gin-gonic/gin&quot;
+import &quot;net/http&quot;   // 使用HTTP相关状态码用到
+
+// 官方 API 示例
+func main() {
+    // Creates a gin router with default middleware:
+    // logger and recovery (crash-free) middleware
+    router := gin.Default()
+
+    // 可选的访问方式
+    router.GET(&quot;/someGet&quot;, getting)
+    router.POST(&quot;/somePost&quot;, posting)
+    router.PUT(&quot;/somePut&quot;, putting)
+    router.DELETE(&quot;/someDelete&quot;, deleting)
+    router.PATCH(&quot;/somePatch&quot;, patching)
+    router.HEAD(&quot;/someHead&quot;, head)
+    router.OPTIONS(&quot;/someOptions&quot;, options)
+
+    // By default it serves on :8080 unless a
+    // PORT environment variable was defined.
+    router.Run()
+    // 参数可以设置监听端口，默认 8080
+    // router.Run(&quot;:3000&quot;) for a hard coded port
+}
+</code></pre>
+
+          </div>
+        </div>
+        <div class="pagination"> 
+          <a class="btn next " href="http://rayxiaoo.github.io/static-blog/post/how-fast-download-tencent-games/"> Next</a> 
+        </div>
+      </div>
+    </div>
+    
+    <div id="disqus_thread"></div>
+    <script>
+      var disqus_config = function () {
+        this.page.url = "http://rayxiaoo.github.io/static-blog/post/golang-high-performance-web-framework-gin-experience-1/";
+        
+      };
+      (function() {
+        var d = document, s = d.createElement('script');
+        s.src = '//rayxiaoo-blog.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+    
+    <div class="footer">
+  
+  <p>Powered by <a href="http://gohugo.io">Hugo</a>. This theme—Slim—is open sourced on <a href="https://github.com/zhe/hugo-theme-slim">Github</a>.</p>
+  
+</div>
+
+  </div>
+  <script src="http://rayxiaoo.github.io/static-blog/js/slim.js"></script>
+  <script src="http://rayxiaoo.github.io/static-blog/js/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad();
+  </script>
+  
+</body>
+
+</html>
