@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <url>
+    <loc>http://rayxiaoo.github.io/static-blog/</loc>
+    <lastmod>2016-05-03T04:04:22+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://rayxiaoo.github.io/static-blog/post/golang-high-performance-web-framework-gin-experience-1/</loc>
+    <lastmod>2016-05-03T04:04:22+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://rayxiaoo.github.io/static-blog/post/how-fast-download-tencent-games/</loc>
+    <lastmod>2016-04-19T12:55:03+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://rayxiaoo.github.io/static-blog/about/</loc>
+    <lastmod>2016-04-19T00:21:43+08:00</lastmod>
+  </url>
+  
+</urlset>

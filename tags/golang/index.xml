@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Golang on A static blog</title>
+    <link>http://rayxiaoo.github.io/static-blog/tags/golang/</link>
+    <description>Recent content in Golang on A static blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 03 May 2016 04:04:22 +0800</lastBuildDate>
+    <atom:link href="http://rayxiaoo.github.io/static-blog/tags/golang/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Golang 高性能 Web 框架 Gin 体验（一）</title>
+      <link>http://rayxiaoo.github.io/static-blog/post/golang-high-performance-web-framework-gin-experience-1/</link>
+      <pubDate>Tue, 03 May 2016 04:04:22 +0800</pubDate>
+      
+      <guid>http://rayxiaoo.github.io/static-blog/post/golang-high-performance-web-framework-gin-experience-1/</guid>
+      <description>
+
+&lt;blockquote&gt;
+&lt;p&gt;Gin 是一个高性能 HTTP web 框架，使用 Go（Golang） 语言开发，项目介绍说：它有着和 Martini 相似的 API，而超高的性能得益于使用了 &lt;a href=&#34;https://github.com/julienschmidt/httprouter&#34;&gt;httprouter&lt;/a&gt;，如果你需要开发高性能应用，可以试试 Gin！&lt;/p&gt;
+
+&lt;p&gt;gin 地址： &lt;a href=&#34;https://gin-gonic.github.io/gin/&#34;&gt;https://gin-gonic.github.io/gin/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;httprouter 地址： &lt;a href=&#34;https://github.com/julienschmidt/httprouter&#34;&gt;https://github.com/julienschmidt/httprouter&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h1 id=&#34;第一次使用-gin-框架&#34;&gt;第一次使用 Gin 框架&lt;/h1&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&#34;1-第一次使用需要先获取相应包&#34;&gt;1. 第一次使用需要先获取相应包&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;注：这里需要先安装好 Go 语言&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$ go get github.com/gin-gonic/gin&lt;/code&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&#34;2-导入相关包即可&#34;&gt;2. 导入相关包即可&lt;/h3&gt;
+
+&lt;p&gt;需要了解如何使用，可以编写一个简单的测试程序，流程如下&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;新建一个文件 test.go&lt;/li&gt;
+&lt;li&gt;键入测试程序代码&lt;/li&gt;
+&lt;li&gt;编译测试文件&lt;/li&gt;
+&lt;li&gt;运行编译成功的可执行文件&lt;/li&gt;
+&lt;li&gt;使用浏览器查看结果&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;测试代码如下：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package main
+
+// 引入 Gin 的框架包
+import &amp;quot;github.com/gin-gonic/gin&amp;quot;
+
+func main() {
+    // 先获取默认路由
+    r := gin.Default()
+    // 这里使用 GET 方式进行响应，可以直接返回 JSON 格式的文本
+    r.GET(&amp;quot;/hello&amp;quot;, func(c *gin.Context) {
+        c.JSON(200, gin.H{
+            &amp;quot;message&amp;quot;: &amp;quot;Hello ,Gin Framework.&amp;quot;,
+        })
+    })
+    // 这里运行后启动WEB服务；监听的IP和端口为： 0.0.0.0:8080
+    r.Run()
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;编译（这里测试环境使用的 Windows 10，Go 1.6）&lt;/strong&gt;&lt;br /&gt;
+&lt;code&gt;$ go build -o test.exe&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;运行后出现如下界面&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ./test.exe
+[GIN-debug] [WARNING] Running in &amp;quot;debug&amp;quot; mode. Switch to &amp;quot;release&amp;quot; mode in production.
+ - using env:   export GIN_MODE=release
+ - using code:  gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /hello                     --&amp;gt; main.main.func1 (3 handlers)
+[GIN-debug] Environment variable PORT is undefined. Using port :8080 by default
+[GIN-debug] Listening and serving HTTP on :8080
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这里运行后反馈的消息还是比较明了的；开始就提示了是 debug 模式
+下面有路由，访问方式，对应函数，访问端口等信息。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;接下来使用浏览器输入地址 127.0.0.1:8080 查看结果&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://i3.buimg.com/8e2b0c7792fc9ded.png&#34; alt=&#34;gin-first-test-hello-json&#34; title=&#34;gin-first-test-hello-json&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://i3.buimg.com/1a6cc4ab5291af6d.png&#34; alt=&#34;gin-first-test-hello-json-mingw64&#34; title=&#34;gin-first-test-hello-json-mingw64&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;至此，已经完成了第一个测试程序。&lt;/strong&gt;
+&lt;strong&gt;高性能这点代码肯定体现不出来，只有在接下来继续深入了解后才能得知&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;gin-的访问方式&#34;&gt;Gin 的访问方式&lt;/h1&gt;
+
+&lt;p&gt;在上面的测试代码中，只使用了 GET 访问方式；&lt;/p&gt;
+
+&lt;p&gt;而 Gin 支持的可选访问方式从官方例子中得知有以下几种。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;GET&lt;/li&gt;
+&lt;li&gt;POST&lt;/li&gt;
+&lt;li&gt;PUT&lt;/li&gt;
+&lt;li&gt;PATCH&lt;/li&gt;
+&lt;li&gt;DELETE&lt;/li&gt;
+&lt;li&gt;OPTIONS&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;官方例子如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package main
+import &amp;quot;github.com/gin-gonic/gin&amp;quot;
+import &amp;quot;net/http&amp;quot;   // 使用HTTP相关状态码用到
+
+// 官方 API 示例
+func main() {
+    // Creates a gin router with default middleware:
+    // logger and recovery (crash-free) middleware
+    router := gin.Default()
+
+    // 可选的访问方式
+    router.GET(&amp;quot;/someGet&amp;quot;, getting)
+    router.POST(&amp;quot;/somePost&amp;quot;, posting)
+    router.PUT(&amp;quot;/somePut&amp;quot;, putting)
+    router.DELETE(&amp;quot;/someDelete&amp;quot;, deleting)
+    router.PATCH(&amp;quot;/somePatch&amp;quot;, patching)
+    router.HEAD(&amp;quot;/someHead&amp;quot;, head)
+    router.OPTIONS(&amp;quot;/someOptions&amp;quot;, options)
+
+    // By default it serves on :8080 unless a
+    // PORT environment variable was defined.
+    router.Run()
+    // 参数可以设置监听端口，默认 8080
+    // router.Run(&amp;quot;:3000&amp;quot;) for a hard coded port
+}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
